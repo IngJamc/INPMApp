@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> 
+    <link rel="stylesheet" type="text/css" href="css/materialize.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
+    
+    <title>Hello World</title>
+
+</head>
+
+<body onload="onLoad()" style="background-color: #F3F3F3;">
+
+<!-- Boton menu-->
+    <nav class="nav" style="top: 0px; z-index: 1;">
+        <div class="nav-wrapper">
+          <a href="#!" class="brand-logo">SÓLO A DIOS LA GLORIA</a>
+          <a id="btn-menu" href="#" data-activates="mobile-demo" class="button-collapse show-on-large"><i class="material-icons">menu</i></a>
+          <ul class="right">
+           <li><a href="#" id="btn-buscar"><i class="material-icons">search</i></a></li>
+          </ul>
+        </div>
+    </nav>
+          <ul class="side-nav" id="mobile-demo">
+            <li>
+              <div class="user-view">
+              <div class="background" style="background-color: #ee6e73">
+                  <img src="img/background.jpg" class="responsive-img">
+              </div>
+              <a href="#!user"><img class="circle" src="img/logo.png"></a>
+              <a href="#!name"><span class="white-text name">INPM | Puerta de Salvación</span></a>
+              <a href="#!email"><span class="white-text email">ipuertadesalvacion@gmail.com</span></a>
+              </div>
+            </li>
+            <li><a href="index.html"><i class="material-icons">home</i>INICIO</a></li>
+            <li><a href="credos.html"><i class="material-icons">class</i>CREDOS</a></li>
+            <li><a href="oracion.html"><i class="material-icons">favorite</i>ORACIÓN</a></li>
+            <li><a href="mandamientos.html"><i class="material-icons">import_contacts</i>MANDAMIENTOS</a></li>              
+            <li><div class="divider"></div></li>
+            <li><a class="subheader">App</a></li>
+            <li><a href="acerca.html"><i class="material-icons">info_outline</i>Acerca</a></li>
+            <li><a onClick="window.plugins.socialsharing.share('Himnario Evangélico Prebiteriano Sólo a Dios la Gloria', 'Sólo a Dios la Gloria', null, 'http://www.ipuertadesalvacion.x10.mx/detalle_descarga.php?detalle=404')"><i class="material-icons">share</i>Compartir</a></li>
+            <li><a href="#" onclick="showConfirm(); return false;"><i class="material-icons">exit_to_app</i>Salir de la App</a></li>
+          </ul>
+        
+        
+    
+    
+<!-- Boton buscar http://ipuertadesalvacion.x10.mx/App/-->
+    <nav class="nav" id="cont-buscar" style="display: none; position: relative; top: 0px; z-index: 2;">
+        <div class="nav-wrapper">
+          <form name="buscar" id="buscar" method="POST" action="http://ipuertadesalvacion.x10.mx/App/busc_himno_V10.php">
+            <div class="input-field">
+              <input name="himno" id="himno" type="tel" placeholder="Ingresa el número del himno" required autocomplete="off" maxlength="3">
+              <!--<label id="busc" class="label-icon" for="search"><i class="medium material-icons">search</i></label>-->
+              <i class="material-icons close">close</i>
+            </div>
+          </form>
+        </div>
+    </nav>    
+    
+        <!-- Mostramos el contenido en pantalla-->
+     <div id="contenido"></div>
+     <div class="container" id="errorConexion" style="display: none">
+         <br><br><br><br><br><br>
+         <p class="center-align"><i class="material-icons wifi_off">portable_wifi_off</i></p>
+         <p class="center-align">Necesita conexión a Internet</p>
+         <!--<p class="center-align"><a href="#" onclick="window.location.reload();" class="waves-effect waves-light btn ">Intentar de nuevo</a></p>-->
+    </div>
+    <!-- Scripts-->
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+    
+
+    <script>		
+	 $(document).ready(function(e) {
+         
+         $.ajax({
+               
+                beforeSend: function(){
+                    //imagen de carga
+                    $("#contenido").html("<center><img class='preloader' src='img/cargando.gif'/></center>");
+                    }
+          });
+         $("#contenido").load("http://ipuertadesalvacion.x10.mx/App/busc_himno_V10.php");
+    });
+    
+	</script>
+    <script>
+         // Inicia mensaje de salir con retroceso
+    //
+    function onLoad() {
+        document.addEventListener("deviceready", onDeviceReady, false);
+    }
+
+    // device APIs are available
+    //
+    function onDeviceReady() {
+        
+        window.plugins.insomnia.keepAwake();
+        // Register the event listener
+        document.addEventListener("backbutton", onBackKeyDown, false);
+        
+        checkConnection();
+
+    }
+        
+    function checkConnection() {
+            var networkState = navigator.connection.type;
+
+            var states = {};
+            states[Connection.UNKNOWN]  = 'Unknown connection';
+            states[Connection.ETHERNET] = 'Ethernet connection';
+            states[Connection.WIFI]     = 'WiFi connection';
+            states[Connection.CELL_2G]  = 'Cell 2G connection';
+            states[Connection.CELL_3G]  = 'Cell 3G connection';
+            states[Connection.CELL_4G]  = 'Cell 4G connection';
+            states[Connection.CELL]     = 'Cell generic connection';
+            states[Connection.NONE]     = 'No network connection';
+            
+            if (networkState == Connection.NONE){
+                
+                div = document.getElementById('contenido');
+                div.style.display = 'none';
+                
+                div = document.getElementById('errorConexion');
+                div.style.display = '';
+                
+                div = document.getElementById('btn-buscar');
+                div.style.display = 'none';
+                
+                div = document.getElementById('btn-menu');
+                div.style.display = 'none';
+                
+                div = document.getElementById('mobile-demo');
+                div.style.display = 'none';
+                
+            }else{
+                
+                div = document.getElementById('errorConexion');
+                div.style.display = 'none';
+                
+                div = document.getElementById('contenido');
+                div.style.display = '';
+                
+                div = document.getElementById('btn-buscar');
+                div.style.display = '';
+                
+                div = document.getElementById('btn-menu');
+                div.style.display = '';
+                
+                div = document.getElementById('mobile-demo');
+                div.style.display = '';
+                            
+                
+            }
+            
+        }
+    setInterval(checkConnection, 3000);
+    // Handle the back button
+    //
+    
+     var lastTimeBackPress=0;
+     var timePeriodToExit=8000;       
+        
+    function onBackKeyDown() {         
+        
+
+    if((new Date().getTime() - lastTimeBackPress) < timePeriodToExit){
+        navigator.app.exitApp();
+    }else{
+        window.plugins.toast.showWithOptions(
+            {
+              message: "Haz doble clic para salir de la App",
+              duration: 2000, // which is 2000 ms. "long" is 4000. Or specify the nr of ms yourself.
+              position: "bottom",
+              addPixelsY: -40 // added a negative value to move it up a bit (default 0)
+            }
+          );
+        
+        lastTimeBackPress=new Date().getTime();
+        
+        location.reload();
+       }
+    };
+        
+// Fin mensaje de salir con retroceso
+    </script>
+    <script>
+// Inicia mensaje de salir con boton "salir"
+
+     function showConfirm() {
+           navigator.notification.confirm(
+              '¿Desea salir del Himnario?', // mensaje a mostrar
+              exitFromApp, // callback a invocar cuando el botón es presionado
+              'Salir', // titulo de la ventana
+              'Cancelar,Si' // etiquetas de los botones
+           );
+     }
+
+     function exitFromApp(buttonIndex) {
+            if (buttonIndex==2){ navigator.app.exitApp();}
+     }
+
+// Fin mensaje de salir con boton "salir"
+    </script>
+    <script>
+// El input de buscar se resetea
+       $("#himno").blur(function(event) {
+           $("#buscar")[0].reset();
+       });
+    </script>
+    <script>
+// El input de buscar solo acepta numeros
+       $('#himno').on('input', function () { 
+        this.value = this.value.replace(/[^0-9]/g,'');
+       });
+    
+    </script>
+    <script>
+// El formulario es enviado por get con ajax
+    $(document).ready(function() {
+
+       // Interceptamos el evento submit
+        $('#buscar').submit(function() {
+      // Enviamos el formulario usando AJAX
+            $.ajax({
+                type: 'GET',
+                url: $(this).attr('action'),
+                data: $(this).serialize(),
+                beforeSend: function(){
+                    //imagen de carga
+                    $("#contenido").html("<center><img class='preloader' src='img/cargando.gif'/></center>");
+                    },
+                // Mostramos un mensaje con la respuesta de PHP
+                success: function(data) {
+                    $('#contenido').html(data);
+                }
+            })        
+            return false;
+        });
+    })
+    // ]]>
+</script>
+    <script>
+// Diferentes funciones
+   $(document).ready(function(){
+
+       
+		$("#btn-buscar").click(function() {
+			$('#cont-buscar').show(); //muestro mediante id
+		 });
+ 
+		$("#cont-buscar").on("keydown", function (event) {
+            if (event.which == 13) {
+                $('#cont-buscar').hide();
+            }           
+        });
+       
+        $(".close").click(function() {
+			$('#cont-buscar').hide(); //muestro mediante id
+        });
+       
+       $("#btn-buscar").click(function() {
+			$('#himno').focus(); //muestro mediante id
+		 });
+       
+        $(".nav").css("position", "fixed");
+                
+	});
+    </script>
+    <script type="text/javascript">
+     $(".button-collapse").sideNav();
+    </script>    
+    <script>
+        function imprimir() {
+            
+            cordova.plugins.printer.isAvailable(
+                //Check whether the printer is available or not.
+                function (isAvailable) {
+                     // Either a DOM node or a string
+                     var style = '<style type="text/css">img{width: 90px; float: left; top:200px;}.titu-himno{font-size: 28px; text-align: center; text-transform: uppercase; font-weight: bold;} .himno{ padding-top: 80px;} .texto-himno{margin-top: 60px; font-size: 15px; text-align: center;} .cont-himno{text-align: center; font-size: 18px;}</style>';
+                     var img = '<img src="http://ipuertadesalvacion.x10.mx/img/logo.png">';
+                     var titulo = '<center><h1>HIMNARIO EVANGÉLICO PRESBITERIANO <br> "SÓLO A DIOS LA GLORIA"</h1></center>';
+                     var page = document.getElementById('imprimir');
+                     var cont = style + img + titulo + page.innerHTML;
+                    
+                     cordova.plugins.printer.print(cont, 'Document.html', function () {
+                //alert('printing finished or canceled')
+            });
+                }
+            );
+           
+
+            
+       }
+    </script>
+</body>
+
+</html>
